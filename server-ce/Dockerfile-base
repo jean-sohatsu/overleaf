@@ -25,6 +25,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
       unattended-upgrades \
       build-essential wget net-tools unzip time imagemagick optipng strace nginx git python3 python-is-python3 zlib1g-dev libpcre3-dev gettext-base libwww-perl ca-certificates curl gnupg \
       qpdf \
+# gawk is a dependency for translate-shell
+      gawk \
 # upgrade base-image, batch all the upgrades together, rather than installing them on-by-one (which is slow!)
 &&  unattended-upgrade --verbose --no-minimal-upgrade-steps \
 # install Node.js https://github.com/nodesource/distributions#nodejs
@@ -79,6 +81,9 @@ RUN mkdir /install-tl-unx \
 &&  tlmgr path add \
 &&  rm -rf /install-tl-unx
 
+#  Install the translate-shell binary for automatic translation
+RUN wget -O /usr/bin/trans https://git.io/trans \
+&&  chmod +x /usr/bin/trans
 
 # Set up overleaf user and home directory
 # -----------------------------------------
